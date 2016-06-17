@@ -37,7 +37,4 @@ libraryDependencies ++= Seq(
 
 proguardScala in Android := true
 
-proguardOptions in Android ++= Seq(
-  "-ignorewarnings",
-  "-keep class scala.Dynamic"
-)
+proguardOptions in Android ++= Settings.proguardCommons ++ Settings.proguardAkka
