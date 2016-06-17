@@ -1,11 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.macroid.starter"
+    package="com.example.macroid.ui"
     android:versionCode="0"
     android:versionName="0.1">
 
     <uses-sdk
-        android:minSdkVersion="9"
-        android:targetSdkVersion="21"/>
+        android:minSdkVersion="23"
+        android:targetSdkVersion="23"/>
 
     <application
         android:theme="@style/AppTheme"
@@ -21,8 +21,7 @@
             </intent-filter>
         </activity>
 
-
-        <activity android:name=".login.LoginActivity"/>
+        <activity android:name=".login.LoginActivity" />
 
     </application>
 </manifest>

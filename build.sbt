@@ -31,6 +31,7 @@ libraryDependencies ++= Seq(
   aar(macroidViewable),
   aar("com.android.support" % "support-v4" % "23.2.0"),
   aar("com.android.support" % "appcompat-v7" % "23.2.0"),
+  aar("com.android.support" % "design" % Versions.androidV),
   compilerPlugin("org.brianmckenna" %% "wartremover" % "0.10")
 )
 

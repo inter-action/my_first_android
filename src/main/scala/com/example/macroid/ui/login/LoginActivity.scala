@@ -1,4 +1,4 @@
-package com.example.macroid.starter.main
+package com.example.macroid.ui.login
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -7,7 +7,7 @@ import macroid.Contexts
 /**
   * Created by interaction on 6/14/16.
   */
-class MainActivity extends AppCompatActivity
+class LoginActivity extends AppCompatActivity
   with Contexts[AppCompatActivity]
   with Layout{
 
@@ -15,5 +15,6 @@ class MainActivity extends AppCompatActivity
     super.onCreate(savedInstanceState)
 
     this.setContentView(layout)
+
   }
 }

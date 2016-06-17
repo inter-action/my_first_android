@@ -6,6 +6,7 @@
     <color name="primary_dark">#ff192533</color>
     <color name="ascent">#F2554A</color>
     <color name="control_highlight">#ff49cb94</color>
+    <color name="white">#ffffff</color>
 
     <color name="placeholder_default">#E4E9EB</color>
 

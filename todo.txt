@@ -1,6 +1,11 @@
 
+https://developer.android.com/guide/topics/ui/how-android-draws.html
 
 http://www.sketchappsources.com/free-source/1307-newspaper-subscription-app-sketch-freebie-resource.html
+
+https://samebug.io/  - Java Exception Search Engine and Database - samebug.io
+
+https://github.com/scala-android/sbt-android
 
 
 depedence explained:
@@ -20,6 +25,9 @@ sketch font missing
 android support Libaries features:
     https://developer.android.com/topic/libraries/support-library/features.html#v7-appcompat
 
+relax while programming
+  http://www.noisli.com/
+  https://medium.com/statuscode/7-sites-to-help-you-relax-and-focus-whilst-programming-16057afe90da#.11lv0hb2t
 
 
 android notes:
@@ -38,4 +46,61 @@ android notes:
     @color/gray points to a specific resource.
 
     When referencing a resource in the theme, you use the ? notation.
-  
+
+  material icons:
+    https://design.google.com/icons/
+
+
+  android svgs:
+
+    Vector Asset Studio:-
+
+     When you specify an SVG file, Vector Asset Studio gives immediate feedback about whether
+     the graphics code is supported or not. If the SVG code is supported, it converts the file
+     into an XML file containing VectorDrawable code.
+
+
+
+      We recommend that you limit a vector image to a maximum of 200 x 200 dp; otherwise, it can take too long to draw.
+
+
+      with tint color:
+        you can add a tint to the vector drawable that you placed in a layout, and the icon color
+        changes to the tint color. If the icon color isn't black, the icon color
+        might instead blend with the tint color
+
+  android support libaries
+    https://developer.android.com/topic/libraries/support-library/features.html
+
+
+
+
+Exceptions:
+
+   solution: https://github.com/47deg/macroid/issues/71
+   Process: com.example.macroid.ui, PID: 5441
+     java.lang.NoSuchMethodError: No virtual method Map()Lscala/collection/immutable/Map$; in class Lscala/Predef$; or its super classes (declaration of 'scala.Predef$' appears in /data/app/com.example.macroid.ui-1/base.apk)
+         at macroid.IdGen.<init>(Searching.scala:12)
+         at macroid.IdGeneration$class.$init$(Searching.scala:32)
+         at
+
+
+
+
+todos:
+  done:
+
+  pending:
+    read macroid ViewPager & RecyleView
+      -
+      
+    how to read language specification documentation
+
+
+    https://medium.com/google-developers/why-would-i-want-to-fitssystemwindows-4e26d9ce1eec#.ny0y8uo4g
+
+    http://tools.android.com/tech-docs/new-build-system/aar-format
+
+
+
+    
