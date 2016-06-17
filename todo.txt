@@ -1,0 +1,41 @@
+
+
+http://www.sketchappsources.com/free-source/1307-newspaper-subscription-app-sketch-freebie-resource.html
+
+
+depedence explained:
+    https://github.com/puffnfresh/wartremover
+        - a scala linter tool
+
+
+
+sketch app resource
+    http://www.sketchappsources.com/tag/android.html
+
+sketch font missing
+    http://www.sketchappsources.com/blog/post/how-to-solve-missing-fonts-in-sketch-app
+
+
+
+android support Libaries features:
+    https://developer.android.com/topic/libraries/support-library/features.html#v7-appcompat
+
+
+
+android notes:
+
+  Create a colors.xml file in res/values.
+
+
+
+  android tint - is controlled by colorAccent
+
+  android selectable
+
+  ? vs @ in resource file referencing
+
+    When referencing a concrete value in XML, such as a color, you use the @ notation.
+    @color/gray points to a specific resource.
+
+    When referencing a resource in the theme, you use the ? notation.
+  
