@@ -1,5 +1,10 @@
 package com.example.macroid.ui.login
 
+import android.app.ProgressDialog
+import android.content.Intent
+import android.support.v7.app.AppCompatActivity
+import com.example.macroid.ui.register.RegisterActivity
+
 import scala.language.postfixOps
 
 import android.text.InputType
@@ -10,9 +15,8 @@ import android.support.design.widget._
 import android.support.v7.widget.AppCompatButton
 import android.util.Log
 
-import macroid.{Tweak, ActivityContextWrapper}
+import macroid.{Ui, Tweak, ActivityContextWrapper, IdGeneration}
 import macroid.FullDsl.{gravity => lGravity, _}//fix gravity conflicts
-import macroid.IdGeneration
 
 import com.example.macroid.ui.LinearLayoutTweaks._
 
@@ -25,12 +29,16 @@ import com.example.macroid.ui.R
   *
   * this layout is identical at res/layout/acitivity_login
   */
-trait Layout extends IdGeneration {
+trait Layout extends IdGeneration { self: AppCompatActivity =>
   /*
   Ids:
     Id.textEmailAddress
    */
   val tag = "LoginLayout"
+
+  var emailIpt = slot[EditText]
+  var passwordIpt = slot[EditText]
+  var loginBtn = slot[AppCompatButton]
 
   def layout(implicit context: ActivityContextWrapper) = {
     getUi(
@@ -51,9 +59,8 @@ trait Layout extends IdGeneration {
               view.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
               view.setHint("Email")
               view.setId(Id.textEmailAddress)
-              Log.d(tag, "initial email")
 
-            } <~ vMatchWidth
+            } <~ vMatchWidth <~ wire(emailIpt)
           ) <~ vMatchWidth <~ llLayoutMargin(0, 8 dp, 0, 8 dp),
 
 
@@ -61,8 +68,7 @@ trait Layout extends IdGeneration {
             w[EditText] <~ Tweak[EditText]{ view =>
               view.setHint("Password")
               view.setId(Id.textPassword)
-              Log.d(tag, "initial password")
-            } <~ vMatchWidth <~ typePassword
+            } <~ vMatchWidth <~ typePassword <~ wire(passwordIpt)
           ) <~ vMatchWidth <~ llLayoutMargin(0, 8 dp, 0, 8 dp),
           /*
             <android.support.v7.widget.AppCompatButton
@@ -75,7 +81,14 @@ trait Layout extends IdGeneration {
             android:text="Login"/>
            */
           w[AppCompatButton] <~ vMatchWidth <~ padding(all = 12 dp) <~
-            llLayoutMargin(top = 24 dp, bottom = 24 dp) <~ id(Id.btnLogin) <~ tvText("Login"),
+            llLayoutMargin(top = 24 dp, bottom = 24 dp)
+            <~ id(Id.btnLogin) <~ tvText("Login") <~ wire(loginBtn)
+            <~ On.Click {
+              Ui {
+                login()
+              }
+            }
+          ,
 
 
           /*
@@ -91,10 +104,111 @@ trait Layout extends IdGeneration {
           w[TextView] <~ vWrapContent
             <~ tvText("No account yet? Create one")
             <~ llLayoutMargin(bottom = 24 dp) <~ tvSizePiexls(16 dp)
-            <~ tvCenter
+            <~ tvCenter <~ On.click {
+              Ui{
+                val action = new Intent(context.application, classOf[RegisterActivity])
+                context.getOriginal.startActivity(action)
+              }
+            }
         ) <~ vMatchWidth <~ padding(24 dp, 56 dp, 24 dp, -1) <~ llVertical
       ) <~ vMatchParent <~ Tweak[ScrollView](_.setFitsSystemWindows(true))
 
     )
+  }
+
+  def login()(implicit context: ActivityContextWrapper): Unit = {
+    validate() match {
+      case Some((email: String, password: String)) =>
+        Log.d(tag, s"input valid: ${email}, ${password}")
+
+        loginBtn.map(_.setEnabled(false))
+
+        val progressDialog = new ProgressDialog(context.getOriginal, R.style.AppTheme_Dark_Dialog)
+        progressDialog.setIndeterminate(true)
+        progressDialog.setMessage("Authenticating...")
+        progressDialog.show()
+
+
+        // TODO: Implement your own authentication logic here.
+
+        new android.os.Handler().postDelayed(new Runnable {
+          override def run(): Unit = {
+
+            // On complete call either onLoginSuccess or onLoginFailed
+            onLoginSuccess();
+            // onLoginFailed();
+            progressDialog.dismiss();
+          }
+        }, 3000)
+
+      case _ =>
+        Log.d(tag, "input invalid")
+    }
+  }
+
+  def onLoginSuccess() = {
+    loginBtn.map(_.setEnabled(true))
+    finish();
+  }
+
+  def onLoginFailed() = {
+    Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+    loginBtn.map(_.setEnabled(true))
+  }
+
+  // much cleaner !
+  def validate() = {
+
+    def validate(target: Option[String], input: Option[EditText], msg: String) = target match {
+      case Some(value) =>
+        input.map(_.setError(null))
+        Some(value)
+      case _ =>
+        input.map(_.setError(msg))
+        None
+    }
+
+    val email = emailIpt.map(_.getText.toString).filter{ value =>
+      !value.isEmpty && android.util.Patterns.EMAIL_ADDRESS.matcher(value).matches()
+    }
+    val password = passwordIpt.map(_.getText.toString).filter{ value =>
+      !value.isEmpty && value.length >= 4 && value.length <= 10
+    }
+
+
+    for {
+      emailTxt <- validate(email, emailIpt, "enter a valid email address")
+      passwordTxt <- validate(password, passwordIpt, "between 4 and 10 alphanumeric characters")
+    } yield (emailTxt, passwordTxt)
+
+    // the code is ugly, try to refactor it
+//    val ipts = for {
+//      email <- emailIpt
+//      password <- passwordIpt
+//    } yield (email.getText.toString, password.getText.toString)
+//
+//    ipts match {
+//      case rs: Some[(String, String)] =>
+//        val (email, password) = rs.get
+//        if (email.isEmpty || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+//          emailIpt.map(_.setError("enter a valid email address"))
+//          return false
+//        }else{
+//          emailIpt.map(_.setError(null))
+//        }
+//
+//        if (password.isEmpty || password.length < 4 || password.length > 10){
+//          passwordIpt.map(_.setError(""))
+//          return false
+//        } else {
+//          passwordIpt.map(_.setError(null))
+//        }
+//
+//        true
+//
+//      case None =>
+//        Log.w(tag, "failed to bind email & password")
+//        false
+//    }
   }
 }
