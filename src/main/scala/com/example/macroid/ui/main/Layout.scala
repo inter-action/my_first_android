@@ -3,6 +3,7 @@ package com.example.macroid.ui.main
 import android.content.{ComponentName, Intent}
 import android.widget.{ImageButton, LinearLayout, TextView}
 import com.example.macroid.ui.login.LoginActivity
+import com.example.macroid.ui.register.RegisterActivity
 import macroid.{Tweak, Ui, ActivityContextWrapper}
 import macroid.FullDsl._
 
@@ -33,6 +34,14 @@ trait Layout {
             view.setImageDrawable(resources.getDrawable(R.drawable.add_circle, null))
             view.setBackgroundColor(resources.getColor(R.color.white, null))
           }
+
+        ,
+        w[TextView] <~ text("Register Activity") <~ On.click {
+          Ui {
+            val action = new Intent(context.getOriginal, classOf[RegisterActivity])
+            context.getOriginal.startActivity(action)
+          }
+        }
       )
     )
   }

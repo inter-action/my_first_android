@@ -41,79 +41,71 @@ trait Layout extends IdGeneration { self: AppCompatActivity =>
   var loginBtn = slot[AppCompatButton]
 
   def layout(implicit context: ActivityContextWrapper) = {
-    getUi(
-      l[ScrollView](
-        l[LinearLayout](
-          l[LinearLayout](
-            // bm: dont know why but it has to be wrapped in a Layout for margin to work
-            w[ImageView] <~ Tweak[ImageView]{imageView =>
-              val params = new LayoutParams(LayoutParams.WRAP_CONTENT, 72 dp)
-              imageView.setLayoutParams(params)
-              imageView.setBackground(context.application.getDrawable(R.drawable.logo))
-            } <~ gravity(Gravity.CENTER)
-          ) <~ vMatchWidth <~ llLayoutMargin(top = 24 dp, bottom = 24 dp),
 
-          // Email Input
-          l[TextInputLayout](
-            w[EditText] <~ Tweak[EditText]{ view =>
-              view.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
-              view.setHint("Email")
-              view.setId(Id.textEmailAddress)
+    getUi {
+      CommonStyle.CommonView (
+        CommonStyle.Logo,
 
-            } <~ vMatchWidth <~ wire(emailIpt)
-          ) <~ vMatchWidth <~ llLayoutMargin(0, 8 dp, 0, 8 dp),
+        // Email Input
+        l[TextInputLayout](
+          w[EditText] <~ Tweak[EditText]{ view =>
+            view.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
+            view.setHint("Email")
+            view.setId(Id.textEmailAddress)
+
+          } <~ vMatchWidth <~ wire(emailIpt)
+        ) <~ vMatchWidth <~ llLayoutMargin(0, 8 dp, 0, 8 dp),
 
 
-          l[TextInputLayout](
-            w[EditText] <~ Tweak[EditText]{ view =>
-              view.setHint("Password")
-              view.setId(Id.textPassword)
-            } <~ vMatchWidth <~ typePassword <~ wire(passwordIpt)
-          ) <~ vMatchWidth <~ llLayoutMargin(0, 8 dp, 0, 8 dp),
-          /*
-            <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_login"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
-            android:padding="12dp"
-            android:text="Login"/>
-           */
-          w[AppCompatButton] <~ vMatchWidth <~ padding(all = 12 dp) <~
-            llLayoutMargin(top = 24 dp, bottom = 24 dp)
-            <~ id(Id.btnLogin) <~ tvText("Login") <~ wire(loginBtn)
-            <~ On.Click {
-              Ui {
-                login()
-              }
-            }
-          ,
+
+        l[TextInputLayout](
+          w[EditText] <~ Tweak[EditText]{ view =>
+            view.setHint("Password")
+            view.setId(Id.textPassword)
+          } <~ vMatchWidth <~ TYPE_PASSWORD <~ wire(passwordIpt)
+        ) <~ vMatchWidth <~ llLayoutMargin(0, 8 dp, 0, 8 dp),
+
+        /*
+   <android.support.v7.widget.AppCompatButton
+   android:id="@+id/btn_login"
+   android:layout_width="fill_parent"
+   android:layout_height="wrap_content"
+   android:layout_marginTop="24dp"
+   android:layout_marginBottom="24dp"
+   android:padding="12dp"
+   android:text="Login"/>
+  */
+        w[AppCompatButton] <~ vMatchWidth <~ padding(all = 12 dp)
+          <~ llLayoutMargin(top = 24 dp, bottom = 24 dp)
+          <~ id(Id.btnLogin) <~ tvText("Login") <~ wire(loginBtn)
+          <~ On.Click {
+          Ui {
+            login()
+          }
+        }
+        ,
 
 
-          /*
-          <TextView android:id="@+id/link_signup"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:text="No account yet? Create one"
-            android:gravity="center"
-            android:textSize="16dip"/>
-           */
+        /*
+        <TextView android:id="@+id/link_signup"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="24dp"
+          android:text="No account yet? Create one"
+          android:gravity="center"
+          android:textSize="16dip"/>
+         */
 
-          w[TextView] <~ vWrapContent
-            <~ tvText("No account yet? Create one")
-            <~ llLayoutMargin(bottom = 24 dp) <~ tvSizePiexls(16 dp)
-            <~ tvCenter <~ On.click {
-              Ui{
-                val action = new Intent(context.application, classOf[RegisterActivity])
-                context.getOriginal.startActivity(action)
-              }
-            }
-        ) <~ vMatchWidth <~ padding(24 dp, 56 dp, 24 dp, -1) <~ llVertical
-      ) <~ vMatchParent <~ Tweak[ScrollView](_.setFitsSystemWindows(true))
+        w[TextView] <~ CommonStyle.LinkStyle
+          <~ tvText("No account yet? Create one") <~ On.click {
+          Ui{
+            val action = new Intent(context.application, classOf[RegisterActivity])
+            context.getOriginal.startActivity(action)
+          }
+        }
+      )
+    }
 
-    )
   }
 
   def login()(implicit context: ActivityContextWrapper): Unit = {
@@ -211,4 +203,29 @@ trait Layout extends IdGeneration { self: AppCompatActivity =>
 //        false
 //    }
   }
+}
+
+object CommonStyle {
+  def CommonView(childs: Ui[View]*)(implicit context: ActivityContextWrapper) = {
+
+    l[ScrollView](
+      l[LinearLayout](
+        childs:_*
+      ) <~ vMatchWidth <~ padding(24 dp, 56 dp, 24 dp, -1) <~ llVertical
+    ) <~ vMatchParent <~ Tweak[ScrollView](_.setFitsSystemWindows(true))
+  }
+
+  def Logo(implicit context: ActivityContextWrapper) =
+    l[LinearLayout](
+      // bm: dont know why but it has to be wrapped in a Layout for margin to work
+      w[ImageView] <~ Tweak[ImageView]{imageView =>
+        val params = new LayoutParams(LayoutParams.WRAP_CONTENT, 72 dp)
+        imageView.setLayoutParams(params)
+        imageView.setBackground(context.application.getDrawable(R.drawable.logo))
+      } <~ gravity(Gravity.CENTER)
+    ) <~ vMatchWidth <~ llLayoutMargin(top = 24 dp, bottom = 24 dp)
+
+  def LinkStyle(implicit context: ActivityContextWrapper) =
+    vWrapContent + llLayoutMargin(bottom = 24 dp) + tvSizePiexls(16 dp) + tvCenter
+
 }

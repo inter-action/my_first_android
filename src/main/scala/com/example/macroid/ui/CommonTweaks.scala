@@ -67,6 +67,12 @@ object TextTweak {
   def tvAlignment(align: Int) = Tweak[W](_.setTextAlignment(align))
 
   val tvCenter = LinearLayoutTweaks.gravity(Gravity.CENTER)
+
+  def tvInputType(tvType: Int) = Tweak[W](_.setInputType(tvType))
+
+  val TYPE_EMAIL = tvInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
+  // @see : http://stackoverflow.com/questions/9892617/programmatically-change-input-type-of-the-edittext-from-password-to-normal-vic
+  val TYPE_PASSWORD = tvInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)
 }
 
 object LinearLayoutTweaks {
@@ -102,10 +108,4 @@ object LinearLayoutTweaks {
 
 object EditTextTweaks {
   private type W = EditText
-
-  // @see : http://stackoverflow.com/questions/9892617/programmatically-change-input-type-of-the-edittext-from-password-to-normal-vic
-  val typePassword = Tweak[W](_.setInputType(
-    InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD))
-
-
 }
