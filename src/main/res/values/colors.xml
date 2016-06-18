@@ -2,11 +2,15 @@
 <resources>
 
     <!-- Default -->
-    <color name="primary">#2D4053</color>
-    <color name="primary_dark">#ff192533</color>
-    <color name="ascent">#F2554A</color>
+
     <color name="control_highlight">#ff49cb94</color>
-    <color name="white">#ffffff</color>
+    <color name="primary">#E43F3F</color>
+    <color name="primary_dark">#E12929</color>
+    <color name="primary_darker">#CC1D1D</color>
+    <color name="white">#FFFFFF</color>
+    <color name="accent">#00FFFF</color>
+    <color name="ascent">#F2554A</color>
+
 
     <color name="placeholder_default">#E4E9EB</color>
 
@@ -51,4 +55,15 @@
     <color name="background_error_button_default">#E05F5E</color>
     <color name="background_error_button_pressed">#ffc45453</color>
     <color name="accent_material_light">#00c7c7</color>
+
+
+
+    <color name="black">#000000</color>
+    <color name="jet">#222222</color>
+    <color name="oil">#333333</color>
+    <color name="monsoon">#777777</color>
+    <color name="jumbo">#888888</color>
+    <color name="aluminum">#999999</color>
+    <color name="base">#AAAAAA</color>
+    <color name="iron">#CCCCCC</color>
 </resources>

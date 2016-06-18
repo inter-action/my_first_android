@@ -3,7 +3,7 @@ package com.example.macroid.ui
 
 import android.text.InputType
 import android.util.TypedValue
-import android.view.ViewGroup.LayoutParams
+import android.view.ViewGroup.{MarginLayoutParams, LayoutParams}
 import android.view.{Gravity, ViewGroup, View}
 
 import android.view.ViewGroup.LayoutParams._
@@ -13,18 +13,43 @@ import macroid.{Ui, ContextWrapper, Tweak}
 import macroid.FullDsl._
 
 object ViewTweaks {
-  type W = View
+  private type W = View
 
   private def lp(w: Int, h: Int): Tweak[W] = Tweak[W](_.setLayoutParams(new LayoutParams(w, h)))
   val vMatchParent: Tweak[W] = lp(MATCH_PARENT, MATCH_PARENT)
   val vWrapContent: Tweak[W] = lp(WRAP_CONTENT, WRAP_CONTENT)
   val vMatchWidth: Tweak[W] = lp(MATCH_PARENT, WRAP_CONTENT)
   val vMatchHeight: Tweak[W] = lp(WRAP_CONTENT, MATCH_PARENT)
+
+  // sets view's margin, not layout
+  def vMargins(margin: Int): Tweak[W] = Tweak[W] { view =>
+    view.getLayoutParams
+      .asInstanceOf[ViewGroup.MarginLayoutParams]
+      .setMargins(margin, margin, margin, margin)
+    view.requestLayout()
+  }
+
+  def vMargin(
+               left: Int = 0,
+               top: Int = 0,
+               right: Int = 0,
+               bottom: Int = 0
+             ): Tweak[W] = Tweak[W] { view =>
+    view
+      .getLayoutParams
+      .asInstanceOf[ViewGroup.MarginLayoutParams]
+      .setMargins(left, top, right, bottom)
+    view.requestLayout()
+  }
+
+  val toMarginLayout = Tweak[W]{view=>
+    view.setLayoutParams(new MarginLayoutParams(view.getLayoutParams))
+  }
 }
 
 
 object TextTweak {
-  type W = TextView
+  private type W = TextView
 
   def tvColor(color: Int): Tweak[W] = Tweak[W](_.setTextColor(color))
 
@@ -45,9 +70,9 @@ object TextTweak {
 }
 
 object LinearLayoutTweaks {
-  import android.widget.LinearLayout.LayoutParams
+  import android.widget.LinearLayout
 
-  type W = LinearLayout
+  private type W = LinearLayout
 
   val llHorizontal: Tweak[W] = Tweak[W](_.setOrientation(LinearLayout.HORIZONTAL))
 
@@ -60,14 +85,14 @@ object LinearLayoutTweaks {
               top: Int = 0,
               right: Int = 0,
               bottom: Int = 0 ): Tweak[View] = Tweak[View]{ view =>
-    val params = new LayoutParams(view.getLayoutParams)
+    val params = new LinearLayout.LayoutParams(view.getLayoutParams)
     params.setMargins(left, top, right, bottom)
     view.setLayoutParams(params)
   }
 
 
   def gravity(gravity: Int): Tweak[View] = Tweak[View] { view: View =>
-    val params = new LayoutParams(view.getLayoutParams)
+    val params = new LinearLayout.LayoutParams(view.getLayoutParams)
     params.gravity = gravity
     view.setLayoutParams(params)
   }
@@ -76,7 +101,7 @@ object LinearLayoutTweaks {
 
 
 object EditTextTweaks {
-  type W = EditText
+  private type W = EditText
 
   // @see : http://stackoverflow.com/questions/9892617/programmatically-change-input-type-of-the-edittext-from-password-to-normal-vic
   val typePassword = Tweak[W](_.setInputType(

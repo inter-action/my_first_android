@@ -4,7 +4,7 @@ import scala.language.postfixOps
 
 import android.text.InputType
 import android.view.{View, Gravity, ViewGroup}
-import android.view.ViewGroup.LayoutParams
+import android.view.ViewGroup.{MarginLayoutParams, LayoutParams}
 import android.widget._
 import android.support.design.widget._
 import android.support.v7.widget.AppCompatButton
@@ -19,9 +19,11 @@ import com.example.macroid.ui.LinearLayoutTweaks._
 import com.example.macroid.ui.TextTweak._
 import com.example.macroid.ui.ViewTweaks._
 import com.example.macroid.ui.EditTextTweaks._
-
+import com.example.macroid.ui.R
 /**
   * Created by interaction on 6/14/16.
+  *
+  * this layout is identical at res/layout/acitivity_login
   */
 trait Layout extends IdGeneration {
   /*
@@ -34,9 +36,14 @@ trait Layout extends IdGeneration {
     getUi(
       l[ScrollView](
         l[LinearLayout](
-          w[ImageView] <~ Tweak[ImageView]{imageView =>
-            imageView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, 72 dp))
-          } <~ llLayoutMargin(24 dp) <~ gravity(Gravity.CENTER_HORIZONTAL),
+          l[LinearLayout](
+            // bm: dont know why but it has to be wrapped in a Layout for margin to work
+            w[ImageView] <~ Tweak[ImageView]{imageView =>
+              val params = new LayoutParams(LayoutParams.WRAP_CONTENT, 72 dp)
+              imageView.setLayoutParams(params)
+              imageView.setBackground(context.application.getDrawable(R.drawable.logo))
+            } <~ gravity(Gravity.CENTER)
+          ) <~ vMatchWidth <~ llLayoutMargin(top = 24 dp, bottom = 24 dp),
 
           // Email Input
           l[TextInputLayout](
@@ -68,7 +75,7 @@ trait Layout extends IdGeneration {
             android:text="Login"/>
            */
           w[AppCompatButton] <~ vMatchWidth <~ padding(all = 12 dp) <~
-            llLayoutMargin(0, 24 dp, 0, 24 dp) <~ id(Id.btnLogin) <~ tvText("Login"),
+            llLayoutMargin(top = 24 dp, bottom = 24 dp) <~ id(Id.btnLogin) <~ tvText("Login"),
 
 
           /*
