@@ -40,6 +40,8 @@ trait Layout extends IdGeneration { self: AppCompatActivity =>
   var passwordIpt = slot[EditText]
   var loginBtn = slot[AppCompatButton]
 
+  val RESIGTER_REQUEST_CODE = Id.REGISTER_CODE
+
   def layout(implicit context: ActivityContextWrapper) = {
 
     getUi {
@@ -100,7 +102,7 @@ trait Layout extends IdGeneration { self: AppCompatActivity =>
           <~ tvText("No account yet? Create one") <~ On.click {
           Ui{
             val action = new Intent(context.application, classOf[RegisterActivity])
-            context.getOriginal.startActivity(action)
+            context.getOriginal.startActivityForResult(action, RESIGTER_REQUEST_CODE)
           }
         }
       )
@@ -146,6 +148,19 @@ trait Layout extends IdGeneration { self: AppCompatActivity =>
   def onLoginFailed() = {
     Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
     loginBtn.map(_.setEnabled(true))
+  }
+
+  override def onActivityResult(requestCode: Int, resultCode: Int, data: Intent): Unit = {
+    if (requestCode == RESIGTER_REQUEST_CODE){
+        if (resultCode == Constants.RESULT_OK){
+          // TODO: Implement successful signup logic here
+          // By default we just finish the Activity and log them in automatically
+          this.finish()
+        }
+    }else {
+      self.onActivityResult(requestCode, resultCode, data)
+    }
+
   }
 
   // much cleaner !
@@ -228,4 +243,8 @@ object CommonStyle {
   def LinkStyle(implicit context: ActivityContextWrapper) =
     vWrapContent + llLayoutMargin(bottom = 24 dp) + tvSizePiexls(16 dp) + tvCenter
 
+}
+
+object Constants {
+  val RESULT_OK = 0
 }

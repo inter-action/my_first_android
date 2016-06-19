@@ -73,7 +73,18 @@ android notes:
     https://developer.android.com/topic/libraries/support-library/features.html
 
 
+  android LinearLayout:
+    默认是水平方向
 
+
+Scala Lang:
+
+  http://stackoverflow.com/questions/1135248/scala-equivalent-of-java-java-lang-classt-object
+
+    val c = new C
+    val clazz = c.getClass              // method from java.lang.Object
+    val clazz2 = classOf[C]             // Scala method: classOf[C] ~ C.class
+    val methods = clazz.getMethods      // method from java.lang.Class<T>
 
 Exceptions:
 
@@ -84,6 +95,27 @@ Exceptions:
          at macroid.IdGeneration$class.$init$(Searching.scala:32)
          at
 
+   EditText added is not a TextInputEditText. Please switch to using that class instead.
+
+
+IntelliJ multi-cursor:
+  Add/remove a selection: Alt + Shift + Mouse Click
+  Select/unselect the next occurrence: Alt + J / Shift + Alt + J (Ctrl + G / Shift + Ctrl + G) for Mac OS X)
+  Select all occurrences: Shift + Ctrl + Alt + J (Ctrl + Cmd + G for Mac OS X)
+  Clone caret above/below (the shortcuts are not mapped yet)
+  Remove all selections: Esc
+
+采用 macroid 的优缺点
+
+  pros:
+    具有很好的组合性?
+
+  cons:
+    Layout 和 view 的 margin 不能很好的设置和统一设置, macroid 的方式就是在不同的 Layout (LinearLayout, MarginLayout)
+    中添加不同的实现, 然后依据对应的 Layout 去调用不同的实现方式
+
+      有些比较 quirk 的地方, 比如 login Layout 中 ImageView 为了设置 its margin, 它的外围必须 wrap 一层 Layout
+      才能工作
 
 
 
@@ -102,5 +134,12 @@ todos:
     http://tools.android.com/tech-docs/new-build-system/aar-format
 
 
+        @Override
+        public void onBackPressed() {
+            // Disable going back to the MainActivity
+            moveTaskToBack(true);
+        }
 
-    
+
+    将 Login 和 Register 的 error_string 提出来
+    当前 Layout 中混合了所有 Activity 的代码 这样组织是不是不是很好? 有没有好的方式优化掉?
