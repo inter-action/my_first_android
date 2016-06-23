@@ -7,6 +7,7 @@ https://samebug.io/  - Java Exception Search Engine and Database - samebug.io
 
 https://github.com/scala-android/sbt-android
 
+https://androidresearch.wordpress.com/2015/04/24/example-usage-of-appcompatactivity-in-android/
 
 depedence explained:
     https://github.com/puffnfresh/wartremover
@@ -121,17 +122,18 @@ IntelliJ multi-cursor:
 
 todos:
   done:
+    http://tools.android.com/tech-docs/new-build-system/aar-format
+      “aar”包是 Android 的类库项目的二进制发行包。
 
+      
   pending:
     read macroid ViewPager & RecyleView
       -
-      
     how to read language specification documentation
 
 
     https://medium.com/google-developers/why-would-i-want-to-fitssystemwindows-4e26d9ce1eec#.ny0y8uo4g
 
-    http://tools.android.com/tech-docs/new-build-system/aar-format
 
 
         @Override
@@ -143,3 +145,6 @@ todos:
 
     将 Login 和 Register 的 error_string 提出来
     当前 Layout 中混合了所有 Activity 的代码 这样组织是不是不是很好? 有没有好的方式优化掉?
+
+    android xml
+      @ vs ?

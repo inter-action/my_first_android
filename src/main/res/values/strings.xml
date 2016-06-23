@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="validate_error_email"></string>
-    <string name="validate_error_password"></string>
+    <string name="validate_error_email">enter a valid email address</string>
+    <string name="validate_error_password">between 4 and 10 alphanumeric characters</string>
 </resources>

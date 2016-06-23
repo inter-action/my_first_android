@@ -101,6 +101,7 @@ trait Layout extends IdGeneration{self: AppCompatActivity =>
 
   def textInputLayoutStyle(implicit context: ActivityContextWrapper) =
     vMatchWidth + llLayoutMargin(top = 8 dp, bottom = 8 dp)
+
   def layout(implicit context: ActivityContextWrapper) = {
     def textInput(ipt: Ui[EditText]) =
       l[TextInputLayout](ipt) <~ vMatchWidth + llLayoutMargin(top = 8 dp, bottom = 8 dp)
@@ -188,7 +189,7 @@ trait Layout extends IdGeneration{self: AppCompatActivity =>
     signUpBtn.map(_.setEnabled(true))
   }
 
-  def validate() = {
+  def validate()(implicit context: ActivityContextWrapper) = {
     def validate(target: Option[String], input: Option[EditText], msg: String) = target match {
       case Some(value) =>
         input.map(_.setError(null))
@@ -212,8 +213,8 @@ trait Layout extends IdGeneration{self: AppCompatActivity =>
 
     for {
       nameTxt <- validate(name, nameIpt, "at least 3 characters")
-      emailTxt <- validate(email, emailIpt, "enter a valid email address")
-      passwordTxt <- validate(password, passwordIpt, "between 4 and 10 alphanumeric characters")
+      emailTxt <- validate(email, emailIpt, context.getOriginal.getString(R.string.validate_error_email))
+      passwordTxt <- validate(password, passwordIpt, context.getOriginal.getString(R.string.validate_error_password))
     } yield (nameTxt, emailTxt, passwordTxt)
   }
 }

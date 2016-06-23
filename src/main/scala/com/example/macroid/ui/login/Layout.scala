@@ -68,15 +68,15 @@ trait Layout extends IdGeneration { self: AppCompatActivity =>
         ) <~ vMatchWidth <~ llLayoutMargin(0, 8 dp, 0, 8 dp),
 
         /*
-   <android.support.v7.widget.AppCompatButton
-   android:id="@+id/btn_login"
-   android:layout_width="fill_parent"
-   android:layout_height="wrap_content"
-   android:layout_marginTop="24dp"
-   android:layout_marginBottom="24dp"
-   android:padding="12dp"
-   android:text="Login"/>
-  */
+         <android.support.v7.widget.AppCompatButton
+         android:id="@+id/btn_login"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="24dp"
+         android:layout_marginBottom="24dp"
+         android:padding="12dp"
+         android:text="Login"/>
+        */
         w[AppCompatButton] <~ vMatchWidth <~ padding(all = 12 dp)
           <~ llLayoutMargin(top = 24 dp, bottom = 24 dp)
           <~ id(Id.btnLogin) <~ tvText("Login") <~ wire(loginBtn)
@@ -164,7 +164,7 @@ trait Layout extends IdGeneration { self: AppCompatActivity =>
   }
 
   // much cleaner !
-  def validate() = {
+  def validate()(implicit context: ActivityContextWrapper) = {
 
     def validate(target: Option[String], input: Option[EditText], msg: String) = target match {
       case Some(value) =>
@@ -184,8 +184,8 @@ trait Layout extends IdGeneration { self: AppCompatActivity =>
 
 
     for {
-      emailTxt <- validate(email, emailIpt, "enter a valid email address")
-      passwordTxt <- validate(password, passwordIpt, "between 4 and 10 alphanumeric characters")
+      emailTxt <- validate(email, emailIpt, context.getOriginal.getString(R.string.validate_error_email))
+      passwordTxt <- validate(password, passwordIpt, context.getOriginal.getString(R.string.validate_error_password))
     } yield (emailTxt, passwordTxt)
 
     // the code is ugly, try to refactor it

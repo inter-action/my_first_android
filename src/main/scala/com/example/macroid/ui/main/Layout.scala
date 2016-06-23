@@ -2,6 +2,7 @@ package com.example.macroid.ui.main
 
 import android.content.{ComponentName, Intent}
 import android.widget.{ImageButton, LinearLayout, TextView}
+import com.example.macroid.ui.intro.WalkThroughActivity
 import com.example.macroid.ui.login.LoginActivity
 import com.example.macroid.ui.register.RegisterActivity
 import macroid.{Tweak, Ui, ActivityContextWrapper}
@@ -39,6 +40,13 @@ trait Layout {
         w[TextView] <~ text("Register Activity") <~ On.click {
           Ui {
             val action = new Intent(context.getOriginal, classOf[RegisterActivity])
+            context.getOriginal.startActivity(action)
+          }
+        },
+
+        w[TextView] <~ text("WalkThrough Activity") <~ On.click {
+          Ui {
+            val action = new Intent(context.getOriginal, classOf[WalkThroughActivity])
             context.getOriginal.startActivity(action)
           }
         }
