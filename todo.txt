@@ -148,3 +148,5 @@ todos:
 
     android xml
       @ vs ?
+
+    scala implicit look up rule

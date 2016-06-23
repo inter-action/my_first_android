@@ -1,6 +1,7 @@
 package com.example.macroid.ui
 
 
+import android.support.v4.view.{PagerAdapter, ViewPager}
 import android.text.InputType
 import android.util.TypedValue
 import android.view.ViewGroup.{MarginLayoutParams, LayoutParams}
@@ -108,4 +109,13 @@ object LinearLayoutTweaks {
 
 object EditTextTweaks {
   private type W = EditText
+}
+
+
+object ViewPagerTweaks {
+  private type W = ViewPager
+
+
+  def vpAdapter(pagerAdapter: PagerAdapter): Tweak[W] = Tweak[W](_.setAdapter(pagerAdapter))
+
 }
