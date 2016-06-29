@@ -2,6 +2,7 @@ package com.example.macroid.ui.login
 
 import android.app.ProgressDialog
 import android.content.Intent
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import com.example.macroid.ui.register.RegisterActivity
 
@@ -236,7 +237,7 @@ object CommonStyle {
       w[ImageView] <~ Tweak[ImageView]{imageView =>
         val params = new LayoutParams(LayoutParams.WRAP_CONTENT, 72 dp)
         imageView.setLayoutParams(params)
-        imageView.setBackground(context.application.getDrawable(R.drawable.logo))
+        imageView.setBackground(ContextCompat.getDrawable(context.getOriginal, R.drawable.logo))
       } <~ gravity(Gravity.CENTER)
     ) <~ vMatchWidth <~ llLayoutMargin(top = 24 dp, bottom = 24 dp)
 

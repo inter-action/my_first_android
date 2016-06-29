@@ -1,6 +1,7 @@
 package com.example.macroid.ui.main
 
 import android.content.{ComponentName, Intent}
+import android.support.v4.content.ContextCompat
 import android.widget.{ImageButton, LinearLayout, TextView}
 import com.example.macroid.ui.intro.WalkThroughActivity
 import com.example.macroid.ui.login.LoginActivity
@@ -16,7 +17,6 @@ import com.example.macroid.ui.TextTweak._
   */
 trait Layout {
   def layout(implicit context: ActivityContextWrapper) = {
-    val resources = context.application.getResources
     getUi(
       l[LinearLayout](
         w[TextView] <~ text("Main Activity") <~ tvColorRes(R.color.ascent) <~ On.Click {
@@ -32,8 +32,7 @@ trait Layout {
         w[ImageButton] <~
           Tweak[ImageButton]{view =>
             // resources.getColor api is available at sdk 23, otherwise use context.getColor instead
-            view.setImageDrawable(resources.getDrawable(R.drawable.add_circle, null))
-            view.setBackgroundColor(resources.getColor(R.color.white, null))
+            view.setBackgroundColor(ContextCompat.getColor(context.getOriginal, R.color.white))
           }
 
         ,

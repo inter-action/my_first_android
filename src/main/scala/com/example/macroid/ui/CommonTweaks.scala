@@ -1,6 +1,7 @@
 package com.example.macroid.ui
 
 
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.{PagerAdapter, ViewPager}
 import android.text.InputType
 import android.util.TypedValue
@@ -55,7 +56,7 @@ object TextTweak {
   def tvColor(color: Int): Tweak[W] = Tweak[W](_.setTextColor(color))
 
   def tvColorRes(resColor: Int)(implicit context: ContextWrapper): Tweak[W] =
-    Tweak[W](_.setTextColor(context.application.getResources.getColor(resColor, null)))
+    Tweak[W](_.setTextColor(ContextCompat.getColor(context.getOriginal, resColor)))
 
   def tvText(text: CharSequence): Tweak[W] = Tweak[W](_.setText(text))
   def tvText(res: Int): Tweak[W] = Tweak[W](_.setText(res))
