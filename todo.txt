@@ -9,6 +9,8 @@ https://github.com/scala-android/sbt-android
 
 https://androidresearch.wordpress.com/2015/04/24/example-usage-of-appcompatactivity-in-android/
 
+
+
 depedence explained:
     https://github.com/puffnfresh/wartremover
         - a scala linter tool
@@ -120,6 +122,14 @@ IntelliJ multi-cursor:
 
 
 
+添加了及时编译
+  采用这个技术的主要问题就是如果更新了方法签名, 编译照常会通过,但是运行时候会报错误
+
+    android:run, and ~protify
+
+  // android hot reload
+  https://github.com/scala-android/sbt-android-protify
+
 todos:
   done:
     http://tools.android.com/tech-docs/new-build-system/aar-format
@@ -150,3 +160,16 @@ todos:
       @ vs ?
 
     scala implicit look up rule
+
+
+    scala language specification, 
+
+    proguard introduction
+
+    添加 RxScala or RxJava
+
+
+    design spec
+      360 * 640
+
+    android layout
