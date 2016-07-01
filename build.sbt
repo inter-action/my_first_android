@@ -39,6 +39,4 @@ proguardScala in Android := true
 
 proguardOptions in Android ++= Settings.proguardCommons ++ Settings.proguardAkka
 
-protifySettings
-
 allDevices in Android := true

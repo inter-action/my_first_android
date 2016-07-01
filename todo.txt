@@ -79,6 +79,13 @@ android notes:
   android LinearLayout:
     默认是水平方向
 
+  android LinearLayout with Margin
+    如果设置水平居中, layout_gravity = center-horizontal , 就不能再调用 leftMargin = x
+    如果调用水平居中就会失效
+
+
+  android:background or android:windowBackground
+
 
 Scala Lang:
 
@@ -122,13 +129,6 @@ IntelliJ multi-cursor:
 
 
 
-添加了及时编译
-  采用这个技术的主要问题就是如果更新了方法签名, 编译照常会通过,但是运行时候会报错误
-
-    android:run, and ~protify
-
-  // android hot reload
-  https://github.com/scala-android/sbt-android-protify
 
 todos:
   done:
