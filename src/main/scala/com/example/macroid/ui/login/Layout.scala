@@ -238,11 +238,11 @@ object CommonStyle {
         val params = new LayoutParams(LayoutParams.WRAP_CONTENT, 72 dp)
         imageView.setLayoutParams(params)
         imageView.setBackground(ContextCompat.getDrawable(context.getOriginal, R.drawable.logo))
-      } <~ gravity(Gravity.CENTER)
+      } <~ llGravity(Gravity.CENTER)
     ) <~ vMatchWidth <~ llLayoutMargin(top = 24 dp, bottom = 24 dp)
 
   def LinkStyle(implicit context: ActivityContextWrapper) =
-    vWrapContent + llLayoutMargin(bottom = 24 dp) + tvSizePiexls(16 dp) + tvCenter
+    vWrapContent + llLayoutMargin(bottom = 24 dp) + tvSizePiexls(16 dp) + llGravity(Gravity.CENTER)
 
 }
 

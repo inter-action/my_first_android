@@ -9,7 +9,7 @@ import android.view.ViewGroup.{MarginLayoutParams, LayoutParams}
 import android.view.{Gravity, ViewGroup, View}
 
 import android.view.ViewGroup.LayoutParams._
-import android.widget.{EditText, LinearLayout, TextView}
+import android.widget._
 
 import macroid.{Ui, ContextWrapper, Tweak}
 import macroid.FullDsl._
@@ -22,7 +22,7 @@ object ViewTweaks {
   val vWrapContent: Tweak[W] = lp(WRAP_CONTENT, WRAP_CONTENT)
   val vMatchWidth: Tweak[W] = lp(MATCH_PARENT, WRAP_CONTENT)
   val vMatchHeight: Tweak[W] = lp(WRAP_CONTENT, MATCH_PARENT)
-
+  val vSize: (Int, Int)=>Tweak[W] = lp(_, _)
   // sets view's margin, not layout
   def vMargins(margin: Int): Tweak[W] = Tweak[W] { view =>
     view.getLayoutParams
@@ -31,12 +31,19 @@ object ViewTweaks {
     view.requestLayout()
   }
 
+  def vBackground(res: Int): Tweak[W] = Tweak[W](_.setBackgroundResource(res))
+
+  def vBackgroundColor(color: Int): Tweak[W] = Tweak[W](_.setBackgroundColor(color))
+
+  def vBackgroundColorResource(color: Int)(implicit context: ContextWrapper): Tweak[W] =
+    Tweak[W](_.setBackgroundColor(ContextCompat.getColor(context.getOriginal, color)))
+
+
   def vMargin(
-               left: Int = 0,
-               top: Int = 0,
-               right: Int = 0,
-               bottom: Int = 0
-             ): Tweak[W] = Tweak[W] { view =>
+    left: Int = 0,
+    top: Int = 0,
+    right: Int = 0,
+    bottom: Int = 0): Tweak[W] = Tweak[W] { view =>
     view
       .getLayoutParams
       .asInstanceOf[ViewGroup.MarginLayoutParams]
@@ -44,9 +51,37 @@ object ViewTweaks {
     view.requestLayout()
   }
 
-  val toMarginLayout = Tweak[W]{view=>
-    view.setLayoutParams(new MarginLayoutParams(view.getLayoutParams))
+  def vOpMargin(
+    left: Option[Int] = Option.empty,
+    top: Option[Int] = Option.empty,
+    right: Option[Int] = Option.empty,
+    bottom: Option[Int] = Option.empty) = Tweak[W]{ view =>
+
+
+    val params = view.getLayoutParams.asInstanceOf[ViewGroup.MarginLayoutParams]
+    left.map( params.leftMargin = _)
+    top.map( params.topMargin = _)
+    right.map( params.rightMargin = _)
+    bottom.map( params.bottomMargin = _)
+
+    view.requestLayout()
   }
+
+
+  def vPaddings(padding: Int): Tweak[W] = Tweak[W](_.setPadding(padding, padding, padding, padding))
+
+  def vPaddings(
+    paddingLeftRight: Int = 0,
+    paddingTopBottom: Int = 0): Tweak[W] =
+    Tweak[W](_.setPadding(paddingLeftRight, paddingTopBottom, paddingLeftRight, paddingTopBottom))
+
+  def vPadding(
+    left: Int = 0,
+    top: Int = 0,
+    right: Int = 0,
+    bottom: Int = 0): Tweak[W] =
+    Tweak[W](_.setPadding(left, top, right, bottom))
+
 }
 
 
@@ -68,13 +103,17 @@ object TextTweak {
 
   def tvAlignment(align: Int) = Tweak[W](_.setTextAlignment(align))
 
-  val tvCenter = LinearLayoutTweaks.gravity(Gravity.CENTER)
+  def tvGravity(gravity: Int) = Tweak[W](_.setGravity(gravity))
 
   def tvInputType(tvType: Int) = Tweak[W](_.setInputType(tvType))
 
   val TYPE_EMAIL = tvInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
   // @see : http://stackoverflow.com/questions/9892617/programmatically-change-input-type-of-the-edittext-from-password-to-normal-vic
   val TYPE_PASSWORD = tvInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)
+
+
+  def tvStyle(style: Int)(implicit context: ContextWrapper) =
+    Tweak[W]( _.setTextAppearance(context.getOriginal, style) )
 }
 
 object LinearLayoutTweaks {
@@ -99,12 +138,59 @@ object LinearLayoutTweaks {
   }
 
 
-  def gravity(gravity: Int): Tweak[View] = Tweak[View] { view: View =>
+  def llGravity(gravity: Int): Tweak[View] = Tweak[View] { view: View =>
     val params = new LinearLayout.LayoutParams(view.getLayoutParams)
     params.gravity = gravity
     view.setLayoutParams(params)
   }
 
+  def llWeight(weight: Int) = Tweak[View]{view=>
+    val params = new LinearLayout.LayoutParams(view.getLayoutParams)
+    params.weight = weight
+    view.setLayoutParams(params)
+  }
+
+}
+
+object FrameLayoutTweaks {
+  def flGravity(gravity: Int) = Tweak[View] { view: View =>
+    val params = new FrameLayout.LayoutParams(view.getLayoutParams)
+    params.gravity = gravity
+    view.setLayoutParams(params)
+  }
+}
+
+
+object RelativeLayoutTweaks {
+  private type W = View
+
+  def rlAlignParent(
+    left: Boolean = false,
+    top: Boolean = false,
+    right: Boolean = false,
+    bottom: Boolean = false,
+    centerHorizontal: Boolean = false,
+    centerVertical: Boolean = false,
+    center: Boolean = false) = Tweak[W]{ view =>
+
+    val params = view.getLayoutParams.asInstanceOf[RelativeLayout.LayoutParams]
+
+    if (left) params.addRule(RelativeLayout.ALIGN_PARENT_LEFT)
+    if (top) params.addRule(RelativeLayout.ALIGN_PARENT_TOP)
+    if (right) params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
+    if (bottom) params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+    if (centerHorizontal) params.addRule(RelativeLayout.CENTER_HORIZONTAL)
+    if (centerVertical) params.addRule(RelativeLayout.CENTER_VERTICAL)
+    if (center) params.addRule(RelativeLayout.CENTER_IN_PARENT)
+
+    view.setLayoutParams(params)
+  }
+
+
+  def toRelativeLayout = Tweak[W]{ view =>
+    val params = view.getLayoutParams
+    view.setLayoutParams(new RelativeLayout.LayoutParams(params))
+  }
 }
 
 
@@ -119,4 +205,11 @@ object ViewPagerTweaks {
 
   def vpAdapter(pagerAdapter: PagerAdapter): Tweak[W] = Tweak[W](_.setAdapter(pagerAdapter))
 
+}
+
+object Utils {
+  implicit class NumberPump(x: Int){
+    // 1.125 = $DESIGN_WIDTH / 320 (which is the screen width with 160 dpi)
+    def toDpr :Int = Math.floor(x / 1.125).toInt
+  }
 }
