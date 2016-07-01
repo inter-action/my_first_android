@@ -116,6 +116,13 @@ object TextTweak {
     Tweak[W]( _.setTextAppearance(context.getOriginal, style) )
 }
 
+
+object ButtonTweaks {
+  private type W = Button
+
+  def btPressed(boolean: Boolean) = Tweak[W]( _.setPressed(boolean) )
+}
+
 object LinearLayoutTweaks {
   import android.widget.LinearLayout
 

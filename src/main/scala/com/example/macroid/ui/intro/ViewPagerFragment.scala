@@ -1,13 +1,15 @@
 package com.example.macroid.ui.intro
 
+import android.graphics.Color
+
 import scala.language.postfixOps
 
 import android.os.Bundle
 import android.support.v4.app.{FragmentPagerAdapter, FragmentManager, Fragment}
 import android.view.WindowManager.LayoutParams
 import android.view.{Gravity, View, ViewGroup, LayoutInflater}
-import android.widget.{RelativeLayout, FrameLayout, LinearLayout, TextView}
-import macroid.{Tweak, FragmentManagerContext, IdGeneration, ActivityContextWrapper}
+import android.widget._
+import macroid._
 
 import macroid.FullDsl.{gravity => lGravity, _}//fix gravity conflicts
 
@@ -19,12 +21,26 @@ import com.example.macroid.ui.Utils._
 import com.example.macroid.ui.LinearLayoutTweaks._
 import com.example.macroid.ui.FrameLayoutTweaks._
 import com.example.macroid.ui.RelativeLayoutTweaks._
+import com.example.macroid.ui.ButtonTweaks._
 import com.example.macroid.ui.R
 
 import ViewPagerFragment._
 
 class ViewPagerFragment(implicit context: ActivityContextWrapper) extends Fragment {
   lazy val text: String = getArguments.getString(TEXT)
+
+  /*
+  View.setPressed(boolean)
+   */
+  def dot:Ui[Button] = {
+    w[Button] <~ (
+      vSize(5.toDpr dp, 5.toDpr dp) + llGravity(Gravity.CENTER_VERTICAL)
+        + vOpMargin(left = Some(1 dp), right = Some(1 dp))
+        + vBackground(R.drawable.walkthrough_points)
+    )
+  }
+
+
   override def onCreateView(
                              inflater: LayoutInflater,
                              container: ViewGroup,
@@ -65,8 +81,12 @@ class ViewPagerFragment(implicit context: ActivityContextWrapper) extends Fragme
             <~ tvText("Skip") <~ tvStyle(R.style.walkthrough_font)
             <~ vWrapContent <~ toRelativeLayout
             <~ rlAlignParent(left = true, centerVertical = true),
-          w[TextView] <~ tvText("dots") <~ vWrapContent
+
+          l[LinearLayout](
+            dot <~ btPressed(true), dot, dot, dot
+          ) <~ vWrapContent
             <~ toRelativeLayout <~ rlAlignParent(center = true),
+
           w[TextView] <~ tvText("forward") <~ tvStyle(R.style.walkthrough_font)
             <~ vWrapContent <~ toRelativeLayout
             <~ rlAlignParent(centerVertical = true, right = true)

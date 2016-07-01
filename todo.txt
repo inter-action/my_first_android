@@ -173,3 +173,7 @@ todos:
       360 * 640
 
     android layout
+
+
+    android viewpager indicator
+      http://stackoverflow.com/questions/20586619/android-viewpager-with-bottom-dots?answertab=votes#tab-top
