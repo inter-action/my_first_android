@@ -8,8 +8,7 @@ import macroid.support.FragmentApi._
 
 class WalkThroughActivity extends AppCompatActivity
   with Contexts[AppCompatActivity]
-  with Layouts.WalkThroughLayout
-  {
+  with Layouts.WalkThroughLayout {
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
@@ -17,4 +16,5 @@ class WalkThroughActivity extends AppCompatActivity
     //    this.setContentView(R.layout.activity_login)
     this.setContentView(layout)
   }
+
 }

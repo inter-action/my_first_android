@@ -2,6 +2,7 @@ package com.example.macroid.ui
 
 
 import android.support.v4.content.ContextCompat
+import android.support.v4.view.ViewPager.OnPageChangeListener
 import android.support.v4.view.{PagerAdapter, ViewPager}
 import android.text.InputType
 import android.util.TypedValue
@@ -222,6 +223,13 @@ object ViewPagerTweaks {
 
   def vpAdapter(pagerAdapter: PagerAdapter): Tweak[W] = Tweak[W](_.setAdapter(pagerAdapter))
 
+  def vpOnPageChangeListener(listener: OnPageChangeListener): Tweak[W] =
+    Tweak[W](_.addOnPageChangeListener(listener))
+
+  def vpCurrentItem(currentItem: Int): Tweak[W] = Tweak[W](_.setCurrentItem(currentItem))
+
+  def vpCurrentItem(currentItem: Int, smoothScroll: Boolean): Tweak[W] =
+    Tweak[W](_.setCurrentItem(currentItem, smoothScroll))
 }
 
 object Utils {

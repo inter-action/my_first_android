@@ -63,8 +63,11 @@ class ViewPagerFragment(implicit context: ActivityContextWrapper) extends Fragme
         <~ vPaddings(0, 27.toDpr dp)
         <~ vBackgroundColorResource(R.color.white)
         <~ toFrameLayout
-        <~ vOpMargin(bottom = Some( (63.toDpr dp ) + 1 dp))
         <~ flGravity(Gravity.BOTTOM)
+        //note, for FrameLayout Its gravity has to be set first before margin to take effect
+        // http://stackoverflow.com/questions/5401952/framelayout-margin-not-working
+
+        <~ vOpMargin(bottom = Some( (63.toDpr  + 1) dp))
     ) <~ vMatchParent
   }
 

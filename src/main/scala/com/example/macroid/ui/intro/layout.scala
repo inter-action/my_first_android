@@ -1,6 +1,9 @@
 package com.example.macroid.ui.intro
 
+import android.support.v4.view.ViewPager.OnPageChangeListener
+
 import scala.language.postfixOps
+import scala.util._
 
 import android.widget._
 import android.support.v4.app.{Fragment, FragmentManager, FragmentPagerAdapter}
@@ -29,6 +32,10 @@ object Layouts {
 
   trait WalkThroughLayout extends IdGeneration{
 
+    var dots = Array(slot[Button], slot[Button], slot[Button], slot[Button])
+
+    var pager = slot[ViewPager]
+
     /*
     View.setPressed(boolean)
      */
@@ -40,13 +47,30 @@ object Layouts {
         )
     }
 
+    val pageChangeListener = new OnPageChangeListener {
+      override def onPageScrollStateChanged(i: Int): Unit = ()
+
+      override def onPageScrolled(i: Int, v: Float, i1: Int): Unit = ()
+
+
+      override def onPageSelected(index: Int): Unit = {
+        dots.zip(0 until dots.length).foreach[Unit]{ e: (Option[Button], Int) =>
+          val (btn, idx) = e
+          if (idx == index) btn.map(_.setPressed(true)) else btn.map(_.setPressed(false))
+        }
+      }
+
+    }
+
+
     def layout(implicit context: ActivityContextWrapper, fragmentManagerContext: FragmentManagerContext[Fragment, FragmentManager]) = {
       getUi(
         l[FrameLayout](
           l[ViewPager]() <~ vMatchParent
             <~ vpAdapter(new IntroPageAdapter(fragmentManagerContext.get, List("Page1", "Page2", "Page3", "Page4")))
-            <~ id(Id.WALK_TROUGH_PAGER), // ViewPager's Id has to be set, or error will throw at runtime
-
+            <~ id(Id.WALK_TROUGH_PAGER) // ViewPager's Id has to be set, or error will throw at runtime
+            <~ vpOnPageChangeListener(pageChangeListener)
+            <~ wire(pager),
 
           l[LinearLayout](
             w[View] <~ vBackgroundColorResource(R.color.iron)
@@ -59,16 +83,29 @@ object Layouts {
                 <~ rlAlignParent(left = true, centerVertical = true),
 
               l[LinearLayout](
-                dot <~ btPressed(true), dot, dot, dot
+                dot <~ Tweak[Button]{btn=> dots(0) = Some(btn)} <~ btPressed(true),
+                // todo: wire(dots(0)) just wont compile successfully
+                dot <~ Tweak[Button]{btn=> dots(1) = Some(btn)},
+                dot <~ Tweak[Button]{btn=> dots(2) = Some(btn)},
+                dot <~ Tweak[Button]{btn=> dots(3) = Some(btn)}
               ) <~ vWrapContent
                 <~ toRelativeLayout <~ rlAlignParent(center = true),
 
               w[TextView] <~ tvText("forward") <~ tvStyle(R.style.walkthrough_font)
                 <~ vWrapContent <~ toRelativeLayout
                 <~ rlAlignParent(centerVertical = true, right = true)
+                <~ On.click( Ui {
+                  pager.map { p =>
+                    val cur = p.getCurrentItem
+                    if (cur < p.getAdapter.getCount){
+                      p.setCurrentItem(cur+1, true)
+                    }
+                  }
+                })
             ) <~ vSize(ViewGroup.LayoutParams.MATCH_PARENT, 63.toDpr dp)
               <~ vPaddings(16.toDpr dp)
           ) <~ vMatchWidth
+            <~ llVertical
             <~ flGravity(Gravity.BOTTOM)
             <~ vBackgroundColorResource(R.color.white)
         )

@@ -128,6 +128,37 @@ IntelliJ multi-cursor:
       才能工作
 
 
+Macroid Quirks:
+
+  wire with a List of elements
+    in WalkThrougthActivity's layout, I tried to use wire(dots(0)), it just wont compile, the compile
+    complain shits that wont help u anyhow, still I cant find the bottom of the problem, hope i can
+    resolve it in the coming future
+
+
+
+
+
+Android Quirks:
+
+  FrameLayout and its margin
+    for FrameLayout Its gravity has to be set first before margin to take effect
+    // http://stackoverflow.com/questions/5401952/framelayout-margin-not-working
+
+
+    ```java
+    // for each child
+    final LayoutParams lp = (LayoutParams) child.getLayoutParams();
+    final int gravity = lp.gravity;
+    if (gravity != -1) {
+    // handle all margin related stuff
+
+    ```
+
+    So if gravity is -1, there will be no margin calculation
+
+
+
 
 
 todos:
