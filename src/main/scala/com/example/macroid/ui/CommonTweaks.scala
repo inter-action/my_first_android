@@ -157,6 +157,12 @@ object LinearLayoutTweaks {
     view.setLayoutParams(params)
   }
 
+
+  def toLinearLayout = Tweak[View]{view=>
+    val params = new LinearLayout.LayoutParams(view.getLayoutParams)
+    view.setLayoutParams(params)
+  }
+
 }
 
 object FrameLayoutTweaks {
@@ -164,6 +170,10 @@ object FrameLayoutTweaks {
     val params = new FrameLayout.LayoutParams(view.getLayoutParams)
     params.gravity = gravity
     view.setLayoutParams(params)
+  }
+
+  def toFrameLayout = Tweak[View]{view=>
+    view.setLayoutParams(new FrameLayout.LayoutParams(view.getLayoutParams))
   }
 }
 
@@ -220,3 +230,4 @@ object Utils {
     def toDpr :Int = Math.floor(x / 1.125).toInt
   }
 }
+

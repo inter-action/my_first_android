@@ -9,8 +9,8 @@ import android.support.v4.app.{FragmentPagerAdapter, FragmentManager, Fragment}
 import android.view.WindowManager.LayoutParams
 import android.view.{Gravity, View, ViewGroup, LayoutInflater}
 import android.widget._
-import macroid._
 
+import macroid._
 import macroid.FullDsl.{gravity => lGravity, _}//fix gravity conflicts
 
 import com.example.macroid.ui.TextTweak._
@@ -30,16 +30,6 @@ class ViewPagerFragment(implicit context: ActivityContextWrapper) extends Fragme
   lazy val text: String = getArguments.getString(TEXT)
   lazy val index = getArguments.getInt(INDEX)
 
-  /*
-  View.setPressed(boolean)
-   */
-  def dot:Ui[Button] = {
-    w[Button] <~ (
-      vSize(5.toDpr dp, 5.toDpr dp) + llGravity(Gravity.CENTER_VERTICAL)
-        + vOpMargin(left = Some(1 dp), right = Some(1 dp))
-        + vBackground(R.drawable.walkthrough_points)
-    )
-  }
 
   /*
   "Award Winning Content "
@@ -55,50 +45,27 @@ class ViewPagerFragment(implicit context: ActivityContextWrapper) extends Fragme
 
       //bottom section
       l[LinearLayout](
-        l[LinearLayout](
-          w[TextView]
-            <~ tvText(heading)
-            <~ tvColor(R.color.black)
-            <~ tvSize(23)
-            <~ vWrapContent
-            <~ llGravity(Gravity.CENTER_HORIZONTAL),
-          w[TextView]
-            <~ tvText(desc)
-            <~ tvColor(R.color.black)
-            <~ tvSize(13)
-            <~ vSize(272.toDpr dp, ViewGroup.LayoutParams.WRAP_CONTENT)
-            <~ llGravity(Gravity.CENTER_HORIZONTAL)
-            <~ vOpMargin(top = Some(16.toDpr dp))
-        ) <~ vMatchWidth
-          <~ llVertical
-          <~ llWeight(1)
-          <~ vPaddings(0, 27.toDpr dp)
-          <~ vBackgroundColorResource(R.color.white),
-
-        w[View] <~ vBackgroundColorResource(R.color.iron)
-          <~ vSize(ViewGroup.LayoutParams.MATCH_PARENT, 1 dp),
-
-        l[RelativeLayout](
-          w[TextView]
-            <~ tvText("Skip") <~ tvStyle(R.style.walkthrough_font)
-            <~ vWrapContent <~ toRelativeLayout
-            <~ rlAlignParent(left = true, centerVertical = true),
-
-          l[LinearLayout](
-            dot <~ btPressed(true), dot, dot, dot
-          ) <~ vWrapContent
-            <~ toRelativeLayout <~ rlAlignParent(center = true),
-
-          w[TextView] <~ tvText("forward") <~ tvStyle(R.style.walkthrough_font)
-            <~ vWrapContent <~ toRelativeLayout
-            <~ rlAlignParent(centerVertical = true, right = true)
-        ) <~ vSize(ViewGroup.LayoutParams.MATCH_PARENT, 63.toDpr dp)
-          <~ vPaddings(16.toDpr dp)
-      ) <~ vSize(ViewGroup.LayoutParams.MATCH_PARENT, 227.toDpr dp)
+        w[TextView]
+          <~ tvText(heading)
+          <~ tvColor(R.color.black)
+          <~ tvSize(23)
+          <~ vWrapContent
+          <~ llGravity(Gravity.CENTER_HORIZONTAL),
+        w[TextView]
+          <~ tvText(desc)
+          <~ tvColor(R.color.black)
+          <~ tvSize(13)
+          <~ vSize(272.toDpr dp, ViewGroup.LayoutParams.WRAP_CONTENT)
+          <~ llGravity(Gravity.CENTER_HORIZONTAL)
+          <~ vOpMargin(top = Some(16.toDpr dp))
+      ) <~ vMatchWidth
         <~ llVertical
-        <~ flGravity(Gravity.BOTTOM)
+        <~ vPaddings(0, 27.toDpr dp)
         <~ vBackgroundColorResource(R.color.white)
-    )
+        <~ toFrameLayout
+        <~ vOpMargin(bottom = Some( (63.toDpr dp ) + 1 dp))
+        <~ flGravity(Gravity.BOTTOM)
+    ) <~ vMatchParent
   }
 
 
