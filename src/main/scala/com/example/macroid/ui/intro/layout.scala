@@ -32,7 +32,7 @@ object Layouts {
     def layout(implicit context: ActivityContextWrapper, fragmentManagerContext: FragmentManagerContext[Fragment, FragmentManager]) = {
       getUi(
         l[ViewPager]( ) <~ vMatchParent
-          <~ vpAdapter(new IntroPageAdapter(fragmentManagerContext.get, List("Page1", "Page2")))
+          <~ vpAdapter(new IntroPageAdapter(fragmentManagerContext.get, List("Page1", "Page2", "Page3", "Page4")))
           <~ id(Id.WALK_TROUGH_PAGER) // ViewPager's Id has to be set, or error will throw at runtime
       )
     }

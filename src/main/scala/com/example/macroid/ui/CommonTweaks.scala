@@ -35,8 +35,8 @@ object ViewTweaks {
 
   def vBackgroundColor(color: Int): Tweak[W] = Tweak[W](_.setBackgroundColor(color))
 
-  def vBackgroundColorResource(color: Int)(implicit context: ContextWrapper): Tweak[W] =
-    Tweak[W](_.setBackgroundColor(ContextCompat.getColor(context.getOriginal, color)))
+  def vBackgroundColorResource(colorRes: Int)(implicit context: ContextWrapper): Tweak[W] =
+    Tweak[W](_.setBackgroundColor(ContextCompat.getColor(context.getOriginal, colorRes)))
 
 
   def vMargin(
