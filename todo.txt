@@ -87,6 +87,14 @@ android notes:
   android:background or android:windowBackground
 
 
+  android res/drawable subfolder problem
+    it turns out android doesnt allow res/drawable to contain any sub folder. but there's a alternative
+
+    http://stackoverflow.com/questions/16577782/sub-folders-in-drawable-resource-folder
+
+
+
+
 Scala Lang:
 
   http://stackoverflow.com/questions/1135248/scala-equivalent-of-java-java-lang-classt-object
@@ -126,6 +134,20 @@ IntelliJ multi-cursor:
 
       有些比较 quirk 的地方, 比如 login Layout 中 ImageView 为了设置 its margin, 它的外围必须 wrap 一层 Layout
       才能工作
+
+      设置LayoutParams的属性的时候, 比如 margin, 底层会调用 view.getLayoutParams, 这个对象可能是空的, 由于现在
+      没有处理 null 的情况(如何处理, 显示制定要生成的LayoutParams的Layout Type?) 所以在代码实现上必须先调用
+      setLayoutParams (via vWrapContent etc...) 然后在设置 its margin. 这种带前置的接口设计其实不是很符合
+      函数对于无状态的要求的.
+
+
+workflow:
+
+  picking color:
+    open Digital Color Meter
+      view -> display values -> select hex
+      cmd + shift + c  to copy color hex value.
+
 
 
 Macroid Quirks:
@@ -208,3 +230,9 @@ todos:
 
     android viewpager indicator
       http://stackoverflow.com/questions/20586619/android-viewpager-with-bottom-dots?answertab=votes#tab-top
+
+
+    onResume 的时候viewPager indicator 设置的焦点消失了
+
+
+    

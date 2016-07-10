@@ -47,13 +47,13 @@ class ViewPagerFragment(implicit context: ActivityContextWrapper) extends Fragme
       l[LinearLayout](
         w[TextView]
           <~ tvText(heading)
-          <~ tvColor(R.color.black)
+          <~ tvColorRes(R.color.black)
           <~ tvSize(23)
           <~ vWrapContent
           <~ llGravity(Gravity.CENTER_HORIZONTAL),
         w[TextView]
           <~ tvText(desc)
-          <~ tvColor(R.color.black)
+          <~ tvColorRes(R.color.black)
           <~ tvSize(13)
           <~ vSize(272.toDpr dp, ViewGroup.LayoutParams.WRAP_CONTENT)
           <~ llGravity(Gravity.CENTER_HORIZONTAL)
@@ -69,6 +69,36 @@ class ViewPagerFragment(implicit context: ActivityContextWrapper) extends Fragme
 
         <~ vOpMargin(bottom = Some( (63.toDpr  + 1) dp))
     ) <~ vMatchParent
+  }
+
+
+  def lastPage = getUi {
+    l[FrameLayout](
+      w[View] <~ vSize(ViewGroup.LayoutParams.MATCH_PARENT, 305.toDpr dp) <~ flGravity(Gravity.TOP)
+        <~ vBackground(R.drawable.res_walkthrough_bgtop),
+
+      l[LinearLayout](
+        w[TextView]
+          <~ tvGravity(Gravity.CENTER)
+          <~ vWrapContent <~ llGravity(Gravity.CENTER_HORIZONTAL)
+          <~ vOpMargin(bottom = Some(10.toDpr dp))
+          <~ tvSize(22) <~ tvColorRes(R.color.black) <~ tvText("And that’s not all"),
+        w[TextView]<~ tvGravity(Gravity.CENTER) <~ vWrapContent 
+          <~ llGravity(Gravity.CENTER_HORIZONTAL) <~ vOpMargin(bottom = Some(30.toDpr dp))
+          <~ tvSize(13) <~ tvColorRes(R.color.black)
+          <~ tvText("Expansion is key and the sky is the limit. This is your " +
+          "entry point to the ultimate workspace companion app and it’s completely hassle free"),
+        w[Button] <~ vBackgroundColor(Color.parseColor("#363E9D")) <~ tvColorRes(R.color.white)
+          <~ tvText("GET STARTED")
+          <~ vWrapContent <~ llGravity(Gravity.CENTER_HORIZONTAL) <~ vOpMargin(bottom = Some(120.toDpr dp))
+          <~ On.Click {
+          Ui {
+            Toast.makeText(context.getOriginal, "hi", Toast.LENGTH_SHORT).show()
+          }
+        }
+
+      ) <~ llVertical <~ vMatchWidth <~ flGravity(Gravity.BOTTOM)
+    ) <~ vMatchParent <~ vBackgroundColorResource(R.color.white)
   }
 
 
@@ -97,6 +127,8 @@ class ViewPagerFragment(implicit context: ActivityContextWrapper) extends Fragme
       val heading = "Hassle Free Installations"
       val desc = "Enterprise application development & central management coupled with secure integration of enterprise systems."
       baseContent(R.drawable.res_walkthrough_phone4, bkgColor, heading, desc)
+    case 4 =>
+      lastPage
   }
 }
 
